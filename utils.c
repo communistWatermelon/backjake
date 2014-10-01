@@ -41,7 +41,7 @@
 -------------------------------------------------------------------------------------------------*/
 
 
-#include "tscan.h"
+#include "backjake.h"
 
 unsigned short csum (unsigned short *ptr, int nbytes) 
 {
