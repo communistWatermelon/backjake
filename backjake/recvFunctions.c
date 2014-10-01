@@ -42,14 +42,14 @@ void* ReceiveDatagram (void *pcap_arg)
 	void *status = NULL;
 	PcapInfo *pcap_ptr = (PcapInfo *)pcap_arg;
 		
-	pcapCompile();
-	pcapFilter();
-	pcapListen();
+	pcapCompile(pcap_ptr, &fp);
+	pcapFilter(pcap_ptr, &fp);
+	pcapListen(pcap_ptr);
 
 	return NULL;
 }
 
-void pcapListen()
+void pcapListen(PcapInfo * pcap_ptr)
 {
 	pcap_loop (pcap_ptr->nic_descr, -1, packetHandler, NULL);
 
@@ -61,18 +61,18 @@ void pcapListen()
 	exit (0);
 }
 
-void pcapCompile()
+void pcapCompile(PcapInfo * pcap_ptr, struct bpf_program * fp)
 {
-	if(pcap_compile (pcap_ptr->nic_descr, &fp, pcap_ptr->cmd, 0, pcap_ptr->netp) == -1)
+	if(pcap_compile (pcap_ptr->nic_descr, fp, pcap_ptr->cmd, 0, pcap_ptr->netp) == -1)
 	{ 
 		fprintf(stderr,"Error calling pcap_compile\n"); 
 		exit(1); 
 	}
 }
 
-void pcapFilter()
+void pcapFilter(PcapInfo * pcap_ptr, struct bpf_program * fp)
 {
-	if (pcap_setfilter(pcap_ptr->nic_descr, &fp) == -1)
+	if (pcap_setfilter(pcap_ptr->nic_descr, fp) == -1)
 	{ 
 		fprintf(stderr,"Error setting filter\n"); 
 		exit(1); 
@@ -81,10 +81,10 @@ void pcapFilter()
 
 int checkPacketSize()
 {
-	return ((sizeof(struct ethhdr) + sizeof(struct iphdr) + sizeof(struct tcphdr)) > 40)
+	return ((sizeof(struct ethhdr) + sizeof(struct iphdr) + sizeof(struct tcphdr)) > 40);
 }
 
-void packetHandler()
+void packetHandler(u_char *ptr_null, const struct pcap_pkthdr* pkthdr, const u_char* packet)
 {
 	static int count = 1;
 	int len;
@@ -120,6 +120,6 @@ int PrintInHex(char *mesg, unsigned char *p, int len)
 		printf("%.2X ", *p);
 		p++;
 	}
-	printf("\n")
+	printf("\n");
 	return 0;
 }

