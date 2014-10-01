@@ -1,9 +1,5 @@
 #include "backjake.h"
 
-void disguise(char ** argv);
-char* getDisguise();
-void setDisguise(char * disguise, char * argv);
-
 void disguise(char ** argv)
 {
 	setDisguise(getDisguise(), argv[0]);

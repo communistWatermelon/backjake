@@ -145,8 +145,6 @@ void setConfig()
 {
     char* options = "";
     options = readConfigFile();
-
-
 }
 
 char* readConfigFile()
