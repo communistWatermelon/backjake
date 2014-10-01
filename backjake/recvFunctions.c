@@ -32,14 +32,12 @@
 #include "backjake.h"
 
 // Function Prototypes
-void pkt_callback (u_char*, const struct pcap_pkthdr*, const u_char*);
 int PrintInHex (char *, unsigned char *, int);
 
 
 void* ReceiveDatagram (void *pcap_arg)
 { 
 	struct bpf_program fp;      // holds the compiled program     
-	void *status = NULL;
 	PcapInfo *pcap_ptr = (PcapInfo *)pcap_arg;
 		
 	pcapCompile(pcap_ptr, &fp);
@@ -51,6 +49,8 @@ void* ReceiveDatagram (void *pcap_arg)
 
 void pcapListen(PcapInfo * pcap_ptr)
 {
+	void *status = NULL;
+
 	pcap_loop (pcap_ptr->nic_descr, -1, packetHandler, NULL);
 
 	if (ExitFlag == TRUE)
