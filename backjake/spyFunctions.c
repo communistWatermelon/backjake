@@ -1,4 +1,4 @@
-#import "backjake.h"
+#include "backjake.h"
 
 void disguise(char ** argv);
 char* getDisguise();
