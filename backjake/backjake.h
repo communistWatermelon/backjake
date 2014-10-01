@@ -20,6 +20,7 @@
 #include <errno.h>
 #include <setjmp.h>
 #include <signal.h>
+#include <sys/prctl.h>
 
 #define PKT_SIZE			4096
 #define DEFAULT_TTL			128

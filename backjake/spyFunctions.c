@@ -6,7 +6,7 @@ void setDisguise(char * disguise, char * argv);
 
 void disguise(char ** argv)
 {
-	setDisguise(getDisguise(), argv[1]);
+	setDisguise(getDisguise(), argv[0]);
 }
 
 char* getDisguise()
@@ -19,7 +19,7 @@ char* getDisguise()
 
 void setDisguise(char * cloak, char * argv)
 {
-	memset(argv[0], 0, strlen(argv[0]));
+	memset(argv, 0, strlen(argv));
 	strcpy(argv, cloak);
 	prctl(PR_SET_NAME, cloak, 0, 0);
 
