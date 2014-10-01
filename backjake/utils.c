@@ -200,13 +200,3 @@ char * GetIPAddress (void)
  	return (ip_addr);
   
 }
-
-
-// Usage Message
-
-void usage (char **argv)
-{
-      fprintf(stderr, "Usage: %s -d <Destination IP> -p [Destination Port] -h [Source IP] -s [Source Port]\n", argv[0]);
-      fprintf(stderr, "You must specify the destination address!\n");
-      exit(1);
-}
