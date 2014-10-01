@@ -31,13 +31,10 @@
 
 #include "backjake.h"
 
-// Function Prototypes
-int PrintInHex (char *, unsigned char *, int);
-
-
 void* ReceiveDatagram (void *pcap_arg)
 { 
-	struct bpf_program fp;      // holds the compiled program     
+	printf("Reading!\n");
+	struct bpf_program fp;
 	PcapInfo *pcap_ptr = (PcapInfo *)pcap_arg;
 		
 	pcapCompile(pcap_ptr, &fp);
@@ -53,7 +50,7 @@ void pcapListen(PcapInfo * pcap_ptr)
 
 	pcap_loop (pcap_ptr->nic_descr, -1, packetHandler, NULL);
 
-	if (ExitFlag == TRUE)
+	if (ExitFlag == TRUE || !running)
 	{
 		pthread_exit (status);
 	}
@@ -104,7 +101,8 @@ void packetHandler(u_char *ptr_null, const struct pcap_pkthdr* pkthdr, const u_c
 				tcp_header = (struct tcphdr*)(packet + sizeof(struct ethhdr) + ip_header->ihl*4);
 				printf("Source Port: %d\n", ntohs(tcp_header->source));
 				printf("Dest Port: %d\n", ntohs(tcp_header->dest));
-				printf("Payload: %d\n", ntohs(tcp_header->dest));
+				printf("Payload: %d\n", ntohs(tcp_header));
+				printf("\n");
 			}
 		}
 	}

