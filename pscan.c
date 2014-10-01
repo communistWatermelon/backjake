@@ -67,33 +67,33 @@ int main (int argc, char **argv)
     // Process command line options
     while ((opt = getopt (argc, argv, OPTIONS)) != -1)
     {
-	switch (opt)
-	{
-	    case 'h': 
-	      Addr_Ptr->SrcHost = optarg;
-	    break;
-		
-	    case 'd':
-	      Addr_Ptr->DstHost = resolve_host (optarg);	// Destination Host name
-	    break;
-	  
-	    case 'p':
-	      Addr_Ptr->dport = atoi (optarg);
-	    break;
-		
-	    case 's':
-	      Addr_Ptr->sport = atoi (optarg);
-	    break;
-		
-	    default:
-	      case '?':
-	      usage (argv);
-	    break;
-	}
+    	switch (opt)
+    	{
+    	    case 'h': 
+    	      Addr_Ptr->SrcHost = optarg;
+    	    break;
+    		
+    	    case 'd':
+    	      Addr_Ptr->DstHost = resolve_host (optarg);	// Destination Host name
+    	    break;
+    	  
+    	    case 'p':
+    	      Addr_Ptr->dport = atoi (optarg);
+    	    break;
+    		
+    	    case 's':
+    	      Addr_Ptr->sport = atoi (optarg);
+    	    break;
+    		
+    	    default:
+    	      case '?':
+    	      usage (argv);
+    	    break;
+    	}
     }
     
     if (Addr_Ptr->DstHost == NULL)
-	usage (argv);
+	   usage (argv);
 
     // set up the packet capture structure and thread
     if ((pcap_ptr = malloc (sizeof (PcapInfo))) == NULL)

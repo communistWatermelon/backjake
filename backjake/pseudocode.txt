@@ -1,4 +1,5 @@
 main
+	get user arguments via config file
 	find best disguise
 		disguise name
 
