@@ -200,3 +200,9 @@ char * GetIPAddress (void)
  	return (ip_addr);
   
 }
+
+void usage(char ** argv)
+{
+    printf("you done goofed!\n");
+    printf("try again!\n");
+}

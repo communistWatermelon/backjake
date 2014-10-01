@@ -5,7 +5,6 @@ static volatile sig_atomic_t canjump;
 pthread_mutex_t ThreadLock = PTHREAD_MUTEX_INITIALIZER;
 //int running = 1;
 
-static void endProgram (int signo);
 static void unlock (int signo);
 
 
@@ -28,10 +27,9 @@ int main(int argc, char** argv)
     initializeSocket(Addr_Ptr);
     setupSignals();
 
-    //authenticateClient();
+    //ReceiveDatagram((void*)pcap_ptr);
     pthread_create (&ThreadID2, NULL, ReceiveDatagram, (void *)pcap_ptr);
     pthread_join (ThreadID2, NULL);
-    //ReceiveDatagram(pcap_ptr);
 
     //free (Addr_Ptr);
     //free (pcap_ptr);
@@ -65,7 +63,6 @@ void initializePcap(PcapInfo **pcap_ptr, AddrInfo *Addr_Ptr)
         exit (1);
     }
 }
-
 
 void setPcap(PcapInfo* pcap_ptr, AddrInfo *Addr_Ptr)
 {
@@ -105,65 +102,6 @@ void checkArgs(int argc, char **argv)
     {
         usage(argv);
     }
-}
-
-void usage(char ** argv)
-{
-    printf("you done goofed!\n");
-    printf("try again!\n");
-}
-
-void setupSignals()
-{
-    if (signal(SIGALRM, unlock) == SIG_ERR)
-        perror("signal(SIGALRM) error");
-
-    if (signal(SIGINT, endProgram) == SIG_ERR)
-        perror("signal(SIGINT) error");    
-}
-
-void authenticateClient()
-{
-    // NOT YET IMPLEMENTED
-
-    //pthread_create(&ThreadID, NULL, knockListener, (void*)Addr_Ptr);
-    
-    // spawn knock code listener
-    // while getting commands
-    //          execute command
-    //          spawn result thread, pipe in results
-}
-
-static void endProgram (int signo)
-{
-    // stop the program
-    running = 0;
-}
-
-static void unlock (int signo)
-{
-    if (canjump == 0)
-        return;
-
-    pthread_mutex_unlock (&ThreadLock);
-    siglongjmp (jmpbuf, 1);
-}
-
-void* knockListener(void* pcap_arg)
-{
-    // NOT YET IMPLEMENTED
-    //
-    return NULL;
-}
-
-void executeCommand()
-{
-    spawnThread();
-}
-
-void spawnThread()
-{
-    // send results to client
 }
 
 void setConfig()

