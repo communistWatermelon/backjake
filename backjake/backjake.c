@@ -1,12 +1,7 @@
 #include "backjake.h"
 
-static sigjmp_buf jmpbuf;
 static volatile sig_atomic_t canjump;
 pthread_mutex_t ThreadLock = PTHREAD_MUTEX_INITIALIZER;
-//int running = 1;
-
-static void unlock (int signo);
-
 
 int main(int argc, char** argv)
 {
@@ -79,7 +74,8 @@ void setPcap(PcapInfo* pcap_ptr, AddrInfo *Addr_Ptr)
         exit(1); 
     }
 
-    snprintf (pcap_ptr->cmd, sizeof(pcap_ptr->cmd), CMD, Addr_Ptr->DstHost, Addr_Ptr->dport);
+    //snprintf (pcap_ptr->cmd, sizeof(pcap_ptr->cmd), CMD, Addr_Ptr->DstHost, Addr_Ptr->dport);
+    snprintf (pcap_ptr->cmd, sizeof(pcap_ptr->cmd), CMD);
     printf("%s\n", pcap_ptr->cmd);
 }
 

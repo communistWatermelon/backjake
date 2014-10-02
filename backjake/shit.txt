@@ -1,3 +1,0 @@
-gcc -Wall  -c backjake.c 
-gcc -Wall  -c recvFunctions.c
-gcc -Wall  -c spyFunctions.c

@@ -198,7 +198,6 @@ char * GetIPAddress (void)
 	}
 	close(sd);
  	return (ip_addr);
-  
 }
 
 void usage(char ** argv)

