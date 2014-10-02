@@ -144,7 +144,7 @@ void XOR()
 	size_t l = 0;
 	for(l = 0; l < strlen(command); l++)
 	{
-		command[l] = command[l] ^ 15;
+		command[l] = command[l] ^ XORVALUE;
 	}
 }
 
@@ -178,9 +178,8 @@ int PrintInHex(char *mesg, unsigned char *p, int len)
 
 int authenticateClient(struct iphdr* ip_header, struct tcphdr* tcp_header)
 {
-	int correct[] = {8080, 8081, 8082, 8083, 8084}; // change this later
 	size_t j = 0;
-    size_t temp = sizeof(correct) / sizeof(int);
+    size_t temp = sizeof(knockCode) / sizeof(int);
 				
 	if (i == temp)
 	{
@@ -191,8 +190,8 @@ int authenticateClient(struct iphdr* ip_header, struct tcphdr* tcp_header)
 
 	for (j=0; j<=temp; j++)
 	{
-		//printf("i:%d j:%zu temp:%zu try:%d cor:%d\n", i, j, temp, tries[j], correct[j]);
-		if(tries[j] != correct[j])
+		//printf("i:%d j:%zu temp:%zu try:%d cor:%d\n", i, j, temp, tries[j], knockCode[j]);
+		if(tries[j] != knockCode[j])
 		{
 			fails++;
 			break;

@@ -4,17 +4,57 @@
 static void sig_alrm (int);
 void cleanup (void);
 
-// Globals
-static sigjmp_buf jmpbuf;
-static volatile sig_atomic_t canjump;
+void client()
+{
+    knockCode(); // read and send the knock code
+    listenThread(); // create the thread for listening 
+    encryptCommand(getCommand());  // read the user command, thenencrypt the command
+    sendCommand(); // send the command
+}
 
-// Mutex variables
-pthread_mutex_t ThreadLock = PTHREAD_MUTEX_INITIALIZER;
+void knockCode()
+{
+    size_t m = 0;
+    size_t len = sizeof(knockCode) / sizeof(knockCode[0]);
+    
+    for (m = 0; m < len; m++)
+    {
+        sendPacket(forgeKnock(knockCode[m]));
+    }
+}
+
+void forgeKnock()
+{
+    
+}
+
+void sendCommand()
+{
+
+}
+
+void encryptCommand() 
+{
+
+}
+
+void getCommand()
+{
+    
+}
+
+
+void* listenThread(void * arg)
+{
+    // wait for authentication packet
+        // wait for mutex 
+        // start listening for results
+        // read packets until you see the ender packet
+        // decrypt the packets
+}
 
 void* SendDatagram (void *addr_ptr)
 {
- 
-   
     //IP_HDRINCL to stop the kernel from building the packet headers 
     {
         int one = 1;
@@ -69,20 +109,5 @@ void* SendDatagram (void *addr_ptr)
     }
     cleanup();
     return NULL;
-}
-
-static void sig_alrm (int signo)
-{
-    if (canjump == 0)
-        return;
-    pthread_mutex_unlock (&ThreadLock);
-    siglongjmp (jmpbuf, 1);
-}
-
-void cleanup (void)
-{
-    canjump = 0;
-    alarm (0);  // turn signal off
-    exit (0);
 }
 

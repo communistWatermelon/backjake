@@ -28,10 +28,12 @@
 #define DEFAULT_SRC_IP		"192.168.0.25"
 #define OPTIONS 			"?h:d:s:p:"
 #define MAXLINE				80
+#define XORVALUE            80
+#define TRUE                1
+#define FALSE               0
 #define CMD					"tcp and src host 10.0.0.28" // and src host %s and src port %d"
-#define TRUE				1
-#define FALSE				0
 
+int knockCode[] = {8080, 8081, 8082, 8083, 8084};
 int ExitFlag;
 int running;
 
