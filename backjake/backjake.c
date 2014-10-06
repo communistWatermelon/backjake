@@ -13,13 +13,13 @@ pthread_mutex_t ThreadLock = PTHREAD_MUTEX_INITIALIZER;
 --
 --  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
---                          ptr     - pointer to an unsigned short (packet, in this case)
---                          nbytes  - number of bytes
+--  INTERFACE:  int main(int argc, char** argv)
+--                      argc - the number of arguments
+--                      argv - the arguments
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    int - returns 0 on success
 --
---  NOTES:      calculates the checksum
+--  NOTES:      the main function of the program. calls the rest of the functions
 --  
 ------------------------------------------------------------------------------*/
 int main(int argc, char** argv)
@@ -56,7 +56,7 @@ int main(int argc, char** argv)
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   initializeSocket
 --
 --  DATE:       October 5, 2014
 --
@@ -64,13 +64,12 @@ int main(int argc, char** argv)
 --
 --  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
---                          ptr     - pointer to an unsigned short (packet, in this case)
---                          nbytes  - number of bytes
+--  INTERFACE:  void initializeSocket(AddrInfo *Addr_Ptr)
+--                          Addr_Ptr - pointer to the address structure
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    void
 --
---  NOTES:      calculates the checksum
+--  NOTES:      initalizes the socket initially
 --  
 ------------------------------------------------------------------------------*/
 void initializeSocket(AddrInfo *Addr_Ptr)
@@ -85,7 +84,7 @@ void initializeSocket(AddrInfo *Addr_Ptr)
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   initializeAddress
 --
 --  DATE:       October 5, 2014
 --
@@ -93,13 +92,12 @@ void initializeSocket(AddrInfo *Addr_Ptr)
 --
 --  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
---                          ptr     - pointer to an unsigned short (packet, in this case)
---                          nbytes  - number of bytes
+--  INTERFACE:  void initializeAddress(AddrInfo **Addr_Ptr)
+--                          Addr_Ptr - pointer to address structure
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    void
 --
---  NOTES:      calculates the checksum
+--  NOTES:      initializes the address structure
 --  
 ------------------------------------------------------------------------------*/
 void initializeAddress(AddrInfo **Addr_Ptr)
@@ -113,7 +111,7 @@ void initializeAddress(AddrInfo **Addr_Ptr)
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   initializePcap
 --
 --  DATE:       October 5, 2014
 --
@@ -121,13 +119,13 @@ void initializeAddress(AddrInfo **Addr_Ptr)
 --
 --  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
---                          ptr     - pointer to an unsigned short (packet, in this case)
---                          nbytes  - number of bytes
+--  INTERFACE:  void initializePcap(PcapInfo **pcap_ptr, AddrInfo *Addr_Ptr)
+--                  pcap_ptr - pointer to pcap structure
+--                  Addr_Ptr - pointer to address structure
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    void
 --
---  NOTES:      calculates the checksum
+--  NOTES:      initializes the pcap for listening
 --  
 ------------------------------------------------------------------------------*/
 void initializePcap(PcapInfo **pcap_ptr, AddrInfo *Addr_Ptr)
@@ -141,7 +139,7 @@ void initializePcap(PcapInfo **pcap_ptr, AddrInfo *Addr_Ptr)
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   setPcap
 --
 --  DATE:       October 5, 2014
 --
@@ -149,13 +147,13 @@ void initializePcap(PcapInfo **pcap_ptr, AddrInfo *Addr_Ptr)
 --
 --  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
---                          ptr     - pointer to an unsigned short (packet, in this case)
---                          nbytes  - number of bytes
+--  INTERFACE:  void setPcap(PcapInfo* pcap_ptr, AddrInfo *Addr_Ptr)
+--                  pcap_ptr - pointer to pcap structure
+--                  Addr_Ptr - pointer to address structure
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    void
 --
---  NOTES:      calculates the checksum
+--  NOTES:      sets the pcap filter command
 --  
 ------------------------------------------------------------------------------*/
 void setPcap(PcapInfo* pcap_ptr, AddrInfo *Addr_Ptr)
@@ -180,7 +178,7 @@ void setPcap(PcapInfo* pcap_ptr, AddrInfo *Addr_Ptr)
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   initializeDoor
 --
 --  DATE:       October 5, 2014
 --
@@ -188,13 +186,12 @@ void setPcap(PcapInfo* pcap_ptr, AddrInfo *Addr_Ptr)
 --
 --  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
---                          ptr     - pointer to an unsigned short (packet, in this case)
---                          nbytes  - number of bytes
+--  INTERFACE:  void initializeDoor(AddrInfo *Addr_Ptr)
+--                  Addr_Ptr - pointer to address structure
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    void
 --
---  NOTES:      calculates the checksum
+--  NOTES:      Initialized the backdoor
 --  
 ------------------------------------------------------------------------------*/
 void initializeDoor(AddrInfo *Addr_Ptr)
@@ -220,13 +217,13 @@ void initializeDoor(AddrInfo *Addr_Ptr)
 --
 --  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
---                          ptr     - pointer to an unsigned short (packet, in this case)
---                          nbytes  - number of bytes
+--  INTERFACE:  void checkArgs(int argc, char **argv)
+--                      argc - the number of arguments
+--                      argv - the arguments
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    void
 --
---  NOTES:      calculates the checksum
+--  NOTES:      checks the arguments for the programs
 --  
 ------------------------------------------------------------------------------*/
 void checkArgs(int argc, char **argv)
@@ -235,27 +232,4 @@ void checkArgs(int argc, char **argv)
     {
         usage(argv);
     }
-}
-
-/*------------------------------------------------------------------------------
---
---  FUNCTION:   setConfig()
---
---  DATE:       October 5, 2014
---
---  DESIGNERS:  Jacob Miner  
---
---  PROGRAMMER: Jacob Miner
---
---  INTERFACE:  setConfig()
---
---  RETURNS:    void
---
---  NOTES:      calculates the checksum
---  
-------------------------------------------------------------------------------*/
-void setConfig()
-{
- //   char* options = "";
-   // options = readConfigFile();
 }

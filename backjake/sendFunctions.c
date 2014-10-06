@@ -6,21 +6,22 @@ void * addr_ptr;
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   client
 --
---  DATE:       November 15, 1996
+--  DATE:       October 5th, 2014
 --
---  DESIGNERS:  Craig Rowland  
+--  DESIGNERS:  Jacob Miner  
 --
---  PROGRAMMER: Craig Rowland
+--  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
---                          ptr     - pointer to an unsigned short (packet, in this case)
---                          nbytes  - number of bytes
+--  INTERFACE:  void client(void * Addr_Ptr, void* pcap_ptr, pthread_t *ThreadID2)
+--                          Addr_Ptr    - a pointer to the address structure
+--                          pcap_ptr    - pointer to the pcap structure
+--                          ThreadID2   - the id of the thread for recieving 
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    void
 --
---  NOTES:      calculates the checksum
+--  NOTES:      the main client code
 --  
 ------------------------------------------------------------------------------*/
 void client(void * Addr_Ptr, void* pcap_ptr, pthread_t *ThreadID2)
@@ -46,21 +47,20 @@ void client(void * Addr_Ptr, void* pcap_ptr, pthread_t *ThreadID2)
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   sendKnockCode
 --
---  DATE:       November 15, 1996
+--  DATE:       October 5th, 2014
 --
---  DESIGNERS:  Craig Rowland  
+--  DESIGNERS:  Jacob Miner  
 --
---  PROGRAMMER: Craig Rowland
+--  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
---                          ptr     - pointer to an unsigned short (packet, in this case)
---                          nbytes  - number of bytes
+--  INTERFACE:  void sendKnockCode(void * Addr_Ptr)
+--                          Addr_Ptr     - a pointer to the address structure
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    void
 --
---  NOTES:      calculates the checksum
+--  NOTES:      reads the knock code, and sends it to the server
 --  
 ------------------------------------------------------------------------------*/
 void sendKnockCode(void * Addr_Ptr)
@@ -79,21 +79,21 @@ void sendKnockCode(void * Addr_Ptr)
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   forgeKnock
 --
---  DATE:       November 15, 1996
+--  DATE:       October 5th, 2014
 --
---  DESIGNERS:  Craig Rowland  
+--  DESIGNERS:  Jacob Miner  
 --
---  PROGRAMMER: Craig Rowland
+--  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
---                          ptr     - pointer to an unsigned short (packet, in this case)
---                          nbytes  - number of bytes
+--  INTERFACE:  void forgeKnock(int knock, void * addr_ptr)
+--                          knock     - the port to knock on
+--                          addr_ptr  - a pointer to the address structure
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    void
 --
---  NOTES:      calculates the checksum
+--  NOTES:      uses raw sockets to build the knock packet
 --  
 ------------------------------------------------------------------------------*/
 void forgeKnock(int knock, void * addr_ptr)
@@ -178,21 +178,21 @@ void forgeKnock(int knock, void * addr_ptr)
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   sendCommand
 --
---  DATE:       November 15, 1996
+--  DATE:       October 5th, 2014
 --
---  DESIGNERS:  Craig Rowland  
+--  DESIGNERS:  Jacob Miner  
 --
---  PROGRAMMER: Craig Rowland
+--  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
---                          ptr     - pointer to an unsigned short (packet, in this case)
---                          nbytes  - number of bytes
+--  INTERFACE:  void sendCommand(void * addr_ptr, char *command)
+--                          addr_ptr  - a pointer to the address structure
+--                          command   - the command to send
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    void
 --
---  NOTES:      calculates the checksum
+--  NOTES:      sends the command to the server
 --  
 ------------------------------------------------------------------------------*/
 void sendCommand(void * addr_ptr, char *command)
@@ -287,21 +287,20 @@ void sendCommand(void * addr_ptr, char *command)
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   recvThread
 --
---  DATE:       November 15, 1996
+--  DATE:       October 5th, 2014
 --
---  DESIGNERS:  Craig Rowland  
+--  DESIGNERS:  Jacob Miner  
 --
---  PROGRAMMER: Craig Rowland
+--  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
---                          ptr     - pointer to an unsigned short (packet, in this case)
---                          nbytes  - number of bytes
+--  INTERFACE:  void* recvThread(void* pcap_arg)
+--                   pcap_arg - the pointer to the pcap structure
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    void* - null, in this case
 --
---  NOTES:      calculates the checksum
+--  NOTES:      a thread for listening on the client side
 --  
 ------------------------------------------------------------------------------*/
 void* recvThread(void* pcap_arg)
@@ -319,7 +318,7 @@ void* recvThread(void* pcap_arg)
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   getCommand
 --
 --  DATE:       October 5, 2014
 --
@@ -327,11 +326,12 @@ void* recvThread(void* pcap_arg)
 --
 --  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
+--  INTERFACE:  int getCommand(char * command)
+--                command - the string to write the command into 
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    int - returns 1 on success
 --
---  NOTES:      calculates the checksum
+--  NOTES:      gets the user input for the command
 --  
 ------------------------------------------------------------------------------*/
 int getCommand(char * command)

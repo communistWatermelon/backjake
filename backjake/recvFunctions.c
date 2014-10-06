@@ -41,21 +41,20 @@ static void endProgram (int signo);
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   ReceiveDatagram
 --
---  DATE:       November 15, 1996
+--  DATE:       October 5, 2014
 --
---  DESIGNERS:  Craig Rowland  
+--  DESIGNERS:  Jacob Miner  
 --
---  PROGRAMMER: Craig Rowland
+--  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
---                          ptr     - pointer to an unsigned short (packet, in this case)
---                          nbytes  - number of bytes
+--  INTERFACE:  ReceiveDatagram (void *pcap_arg)
+--                          pcap_arg - pointer to pcap struct
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    void * - null in this case
 --
---  NOTES:      calculates the checksum
+--  NOTES:      a thread that reads in packets on the server end
 --  
 ------------------------------------------------------------------------------*/
 void* ReceiveDatagram (void *pcap_arg)
@@ -73,21 +72,22 @@ void* ReceiveDatagram (void *pcap_arg)
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   startServer
 --
---  DATE:       November 15, 1996
+--  DATE:       October 5, 2014
 --
---  DESIGNERS:  Craig Rowland  
+--  DESIGNERS:  Jacob Miner  
 --
---  PROGRAMMER: Craig Rowland
+--  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
---                          ptr     - pointer to an unsigned short (packet, in this case)
---                          nbytes  - number of bytes
+--  INTERFACE:  void startServer(void* Addr_Ptr, void* pcap_ptr, pthread_t *ThreadID2)
+--                          Addr_Ptr    - a pointer to the address structure
+--                          pcap_ptr    - pointer to the pcap structure
+--                          ThreadID2   - the id of the thread for recieving 
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    void
 --
---  NOTES:      calculates the checksum
+--  NOTES:      starts the server, opening the recieving threads
 --  
 ------------------------------------------------------------------------------*/
 void startServer(void* Addr_Ptr, void* pcap_ptr, pthread_t *ThreadID2)
@@ -99,21 +99,19 @@ void startServer(void* Addr_Ptr, void* pcap_ptr, pthread_t *ThreadID2)
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   setupSignals
 --
---  DATE:       November 15, 1996
+--  DATE:       October 5, 2014
 --
---  DESIGNERS:  Craig Rowland  
+--  DESIGNERS:  Jacob Miner  
 --
---  PROGRAMMER: Craig Rowland
+--  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
---                          ptr     - pointer to an unsigned short (packet, in this case)
---                          nbytes  - number of bytes
+--  INTERFACE:  void setupSignals()
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    void
 --
---  NOTES:      calculates the checksum
+--  NOTES:      sets up the signal so the program can be ended with ctrl-C
 --  
 ------------------------------------------------------------------------------*/
 void setupSignals()
@@ -124,21 +122,20 @@ void setupSignals()
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   pcapListen
 --
---  DATE:       November 15, 1996
+--  DATE:       October 5, 2014
 --
---  DESIGNERS:  Craig Rowland  
+--  DESIGNERS:  Jacob Miner  
 --
---  PROGRAMMER: Craig Rowland
+--  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
---                          ptr     - pointer to an unsigned short (packet, in this case)
---                          nbytes  - number of bytes
+--  INTERFACE:  void pcapListen(PcapInfo * pcap_ptr)
+--                      pcap_ptr - pointer to the pcap struct
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    void
 --
---  NOTES:      calculates the checksum
+--  NOTES:      starts the listening at the card level
 --  
 ------------------------------------------------------------------------------*/
 void pcapListen(PcapInfo * pcap_ptr)
@@ -157,21 +154,21 @@ void pcapListen(PcapInfo * pcap_ptr)
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   pcapCompile
 --
---  DATE:       November 15, 1996
+--  DATE:       October 5, 2014
 --
---  DESIGNERS:  Craig Rowland  
+--  DESIGNERS:  Jacob Miner  
 --
---  PROGRAMMER: Craig Rowland
+--  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
---                          ptr     - pointer to an unsigned short (packet, in this case)
---                          nbytes  - number of bytes
+--  INTERFACE:  void pcapCompile(PcapInfo * pcap_ptr, struct bpf_program * fp)
+--              		pcap_ptr - pointer to the pcap struct
+--						fp 		 - the program itself
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    void
 --
---  NOTES:      calculates the checksum
+--  NOTES:      compiles the command to the card
 --  
 ------------------------------------------------------------------------------*/
 void pcapCompile(PcapInfo * pcap_ptr, struct bpf_program * fp)
@@ -185,21 +182,21 @@ void pcapCompile(PcapInfo * pcap_ptr, struct bpf_program * fp)
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   pcapFilter
 --
---  DATE:       November 15, 1996
+--  DATE:       October 5, 2014
 --
---  DESIGNERS:  Craig Rowland  
+--  DESIGNERS:  Jacob Miner  
 --
---  PROGRAMMER: Craig Rowland
+--  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
---                          ptr     - pointer to an unsigned short (packet, in this case)
---                          nbytes  - number of bytes
+--  INTERFACE:  void pcapFilter(PcapInfo * pcap_ptr, struct bpf_program * fp)
+--              		pcap_ptr - pointer to the pcap struct
+--						fp 		 - the program itself
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    void
 --
---  NOTES:      calculates the checksum
+--  NOTES:      sets the filter for the pcap section
 --  
 ------------------------------------------------------------------------------*/
 void pcapFilter(PcapInfo * pcap_ptr, struct bpf_program * fp)
@@ -213,21 +210,19 @@ void pcapFilter(PcapInfo * pcap_ptr, struct bpf_program * fp)
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   checkPacketSize
 --
---  DATE:       November 15, 1996
+--  DATE:       October 5, 2014
 --
---  DESIGNERS:  Craig Rowland  
+--  DESIGNERS:  Jacob Miner  
 --
---  PROGRAMMER: Craig Rowland
+--  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
---                          ptr     - pointer to an unsigned short (packet, in this case)
---                          nbytes  - number of bytes
+--  INTERFACE:  int checkPacketSize()
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    the size of the IP packet
 --
---  NOTES:      calculates the checksum
+--  NOTES:      returns the packet size
 --  
 ------------------------------------------------------------------------------*/
 int checkPacketSize()
@@ -237,21 +232,22 @@ int checkPacketSize()
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   packetHandler
 --
---  DATE:       November 15, 1996
+--  DATE:       October 5, 2014
 --
---  DESIGNERS:  Craig Rowland  
+--  DESIGNERS:  Jacob Miner  
 --
---  PROGRAMMER: Craig Rowland
+--  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
---                          ptr     - pointer to an unsigned short (packet, in this case)
---                          nbytes  - number of bytes
+--  INTERFACE:  void packetHandler(u_char *ptr_null, const struct pcap_pkthdr* pkthdr, const u_char* packet)
+--                          ptr_null    - pointer to null
+--                          pkthdr  	- the packet's header
+--							packet 		- the packet itself
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    void
 --
---  NOTES:      calculates the checksum
+--  NOTES:      handles packets at the card level
 --  
 ------------------------------------------------------------------------------*/
 void packetHandler(u_char *ptr_null, const struct pcap_pkthdr* pkthdr, const u_char* packet)
@@ -288,21 +284,20 @@ void packetHandler(u_char *ptr_null, const struct pcap_pkthdr* pkthdr, const u_c
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   decryptPacket
 --
---  DATE:       November 15, 1996
+--  DATE:       October 5, 2014
 --
---  DESIGNERS:  Craig Rowland  
+--  DESIGNERS:  Jacob Miner  
 --
---  PROGRAMMER: Craig Rowland
+--  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
---                          ptr     - pointer to an unsigned short (packet, in this case)
---                          nbytes  - number of bytes
+--  INTERFACE:  char* decryptPacket(struct tcphdr* tcp_header)
+--                          tcp_header - the tcp packet header
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    char * returns the decrypted packet
 --
---  NOTES:      calculates the checksum
+--  NOTES:      decrypts the packet for use
 --  
 ------------------------------------------------------------------------------*/
 char* decryptPacket(struct tcphdr* tcp_header)
@@ -325,21 +320,20 @@ char* decryptPacket(struct tcphdr* tcp_header)
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   runCommand
 --
---  DATE:       November 15, 1996
+--  DATE:       October 5, 2014
 --
---  DESIGNERS:  Craig Rowland  
+--  DESIGNERS:  Jacob Miner  
 --
---  PROGRAMMER: Craig Rowland
+--  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
---                          ptr     - pointer to an unsigned short (packet, in this case)
---                          nbytes  - number of bytes
+--  INTERFACE:  runCommand(char* command)
+--					command - the command to run
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    void
 --
---  NOTES:      calculates the checksum
+--  NOTES:      runs the command sent from the client
 --  
 ------------------------------------------------------------------------------*/
 void runCommand(char* command)
@@ -350,19 +344,18 @@ void runCommand(char* command)
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   authenticated
 --
---  DATE:       November 15, 1996
+--  DATE:       October 5, 2014
 --
---  DESIGNERS:  Craig Rowland  
+--  DESIGNERS:  Jacob Miner  
 --
---  PROGRAMMER: Craig Rowland
+--  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
---                          ptr     - pointer to an unsigned short (packet, in this case)
---                          nbytes  - number of bytes
+--  INTERFACE:  int authenticated(int ip)
+--						ip - the address to check against the  authenticated list
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    int - returns 1 if the user is allowed
 --
 --  NOTES:      calculates the checksum
 --  
@@ -378,17 +371,18 @@ int authenticated(int ip)
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   PrintInHex
 --
---  DATE:       November 15, 1996
+--  DATE:       October 5, 2014
 --
---  DESIGNERS:  Craig Rowland  
+--  DESIGNERS:  Jacob Miner  
 --
---  PROGRAMMER: Craig Rowland
+--  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
---                          ptr     - pointer to an unsigned short (packet, in this case)
---                          nbytes  - number of bytes
+--  INTERFACE:  int PrintInHex(char *mesg, unsigned char *p, int len)
+--					mesg - the message to print
+--					p    - where to write from
+--					len  - the length of the message
 --
 --  RETURNS:    unsigned short - the checksum of the packet
 --
@@ -410,21 +404,21 @@ int PrintInHex(char *mesg, unsigned char *p, int len)
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   authenticateClient
 --
---  DATE:       November 15, 1996
+--  DATE:       October 5, 2014
 --
---  DESIGNERS:  Craig Rowland  
+--  DESIGNERS:  Jacob Miner  
 --
---  PROGRAMMER: Craig Rowland
+--  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
---                          ptr     - pointer to an unsigned short (packet, in this case)
---                          nbytes  - number of bytes
+--  INTERFACE:  int authenticateClient(struct iphdr* ip_header, struct tcphdr* tcp_header)
+--					ip_header  - the ip header struct
+-- 					tcp_header - the tcp header struct
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    int - 1 if the client is authenticated
 --
---  NOTES:      calculates the checksum
+--  NOTES:      checks the knock code and authenticates the client
 --  
 ------------------------------------------------------------------------------*/
 int authenticateClient(struct iphdr* ip_header, struct tcphdr* tcp_header)
@@ -474,47 +468,20 @@ int authenticateClient(struct iphdr* ip_header, struct tcphdr* tcp_header)
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   executeCommand
 --
---  DATE:       November 15, 1996
+--  DATE:       October 5, 2014
 --
---  DESIGNERS:  Craig Rowland  
+--  DESIGNERS:  Jacob Miner  
 --
---  PROGRAMMER: Craig Rowland
+--  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
---                          ptr     - pointer to an unsigned short (packet, in this case)
---                          nbytes  - number of bytes
+--  INTERFACE:  void executeCommand(char* command)
+--              		command - the command to execute
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    void
 --
---  NOTES:      calculates the checksum
---  
-------------------------------------------------------------------------------*/
-void* knockListener(void* pcap_arg)
-{
-    // NOT YET IMPLEMENTED
-    //
-    return NULL;
-}
-
-/*------------------------------------------------------------------------------
---
---  FUNCTION:   in_cksum
---
---  DATE:       November 15, 1996
---
---  DESIGNERS:  Craig Rowland  
---
---  PROGRAMMER: Craig Rowland
---
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
---                          ptr     - pointer to an unsigned short (packet, in this case)
---                          nbytes  - number of bytes
---
---  RETURNS:    unsigned short - the checksum of the packet
---
---  NOTES:      calculates the checksum
+--  NOTES:      executes the command, then sends the results
 --  
 ------------------------------------------------------------------------------*/
 void executeCommand(char* command)
@@ -537,7 +504,7 @@ void executeCommand(char* command)
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   endProgram
 --
 --  DATE:       October 5, 2014
 --
@@ -545,11 +512,12 @@ void executeCommand(char* command)
 --
 --  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
+--  INTERFACE:  void endProgram (int signo)
+--					signo - the signal number
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    void
 --
---  NOTES:      calculates the checksum
+--  NOTES:      ends the program when ctrl-c is hit.
 --  
 ------------------------------------------------------------------------------*/
 static void endProgram (int signo)

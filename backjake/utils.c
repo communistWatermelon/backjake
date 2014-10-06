@@ -1,17 +1,14 @@
 #include "backjake.h"
 /*---------------------------------------------------------------------------------------
---  Source File:        utils.c -  This file contains some miscellaneous functions
+--  Source File:    utils.c -  This file contains some miscellaneous functions
 --                     used by the rest of the application.
 --
 --  Functions:      See function headers below 
-
 --  Date:           June 3, 2011
---
---  Revisions:      (Date and nic_description)
---                  
---  Designer:       Aman Abdulla
+--                
+--  Designer:       Jacob Miner
 --              
---  Programmer:     Aman Abdulla
+--  Programmer:     Jacob Miner
 --
 ---------------------------------------------------------------------------------------*/
 
@@ -26,10 +23,6 @@
 --              int nbytes - the total length of the header 
 --
 --  Returns:    The calaculated checksum
---
---  Date:       November 23, 2006
---
---  Revisions:  (Date and Description)
 --
 --  Designer:   RFC 791
 --
@@ -67,7 +60,7 @@ unsigned short csum (unsigned short *ptr, int nbytes)
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   resolve_host
 --
 --  DATE:       October 5, 2014
 --
@@ -75,14 +68,15 @@ unsigned short csum (unsigned short *ptr, int nbytes)
 --
 --  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
+--  INTERFACE:  char * resolve_host (const char *host)
+--                      host - the host to resolve
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    char *  - the host
 --
---  NOTES:      calculates the checksum
+--  NOTES:      resolves host to an ip address
 --  
 ------------------------------------------------------------------------------*/
-char * resolve_host (const char *host)
+char * resolve_host(const char *host)
 {
     struct addrinfo hints, *res;
     int errcode;
@@ -124,7 +118,7 @@ char * resolve_host (const char *host)
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   GetIPAddress
 --
 --  DATE:       October 5, 2014
 --
@@ -132,14 +126,14 @@ char * resolve_host (const char *host)
 --
 --  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
+--  INTERFACE:  GetIPAddress()
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    char * - the ip address of the host machine's interface
 --
---  NOTES:      calculates the checksum
+--  NOTES:      Opens a socket using the specified interface, then gets the ip address
 --  
 ------------------------------------------------------------------------------*/
-char * GetIPAddress (void)
+char * GetIPAddress()
 {
 	int sd;
  	struct sockaddr_in *addrp;
@@ -174,7 +168,7 @@ char * GetIPAddress (void)
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   usage
 --
 --  DATE:       October 5, 2014
 --
@@ -182,34 +176,12 @@ char * GetIPAddress (void)
 --
 --  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
+--  INTERFACE:  usage(char ** argv)
+--                      argv - the program's arguments
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    void
 --
---  NOTES:      calculates the checksum
---  
-------------------------------------------------------------------------------*/
-void usage2()
-{   
-    printf("you done goofed!\n");
-    printf("try again!\n");   
-}
-
-/*------------------------------------------------------------------------------
---
---  FUNCTION:   in_cksum
---
---  DATE:       October 5, 2014
---
---  DESIGNERS:  Jacob Miner  
---
---  PROGRAMMER: Jacob Miner
---
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
---
---  RETURNS:    unsigned short - the checksum of the packet
---
---  NOTES:      calculates the checksum
+--  NOTES:      tells the user how to use the program
 --  
 ------------------------------------------------------------------------------*/
 void usage(char ** argv)
@@ -220,7 +192,7 @@ void usage(char ** argv)
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   XOR
 --
 --  DATE:       October 5, 2014
 --
@@ -228,11 +200,12 @@ void usage(char ** argv)
 --
 --  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
+--  INTERFACE:  XOR(char * command)
+--                  command - the string to be encoded using XOR
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    void
 --
---  NOTES:      calculates the checksum
+--  NOTES:      XORs the string to encode it.
 --  
 ------------------------------------------------------------------------------*/
 void XOR(char * command)
@@ -251,7 +224,7 @@ void XOR(char * command)
 
 /*------------------------------------------------------------------------------
 --
---  FUNCTION:   in_cksum
+--  FUNCTION:   length
 --
 --  DATE:       October 5, 2014
 --
@@ -259,11 +232,12 @@ void XOR(char * command)
 --
 --  PROGRAMMER: Jacob Miner
 --
---  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
+--  INTERFACE:  length(char* command)
+--                  command - the array to get the length of
 --
---  RETURNS:    unsigned short - the checksum of the packet
+--  RETURNS:    int - the length of the array
 --
---  NOTES:      calculates the checksum
+--  NOTES:      calculates the length of an array pointer
 --  
 ------------------------------------------------------------------------------*/
 int length(char* command)
