@@ -109,7 +109,7 @@ void forgeKnock(int knock, void * addr_ptr)
     
     sin.sin_family = AF_INET;
     sin.sin_port = htons (UserAddr->dport);
-    UserAddr->DstHost = "10.0.0.9";
+    UserAddr->DstHost = DESTIP;
     sin.sin_addr.s_addr = inet_addr (UserAddr->DstHost); 
 
     memset (datagram, 0, PKT_SIZE); // zero out the buffer where the datagram will be stored
@@ -212,7 +212,7 @@ void sendCommand(void * addr_ptr, char *command)
         
         sin.sin_family = AF_INET;
         sin.sin_port = htons (UserAddr->dport);
-        UserAddr->DstHost = "10.0.0.9";
+        UserAddr->DstHost = DESTIP;
         sin.sin_addr.s_addr = inet_addr (UserAddr->DstHost); 
 
         memset (datagram, 0, PKT_SIZE); // zero out the buffer where the datagram will be stored
@@ -365,4 +365,3 @@ int getCommand(char * command)
     command[i] == 80-21;
     return 1;
 }
-
