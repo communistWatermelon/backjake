@@ -43,14 +43,11 @@ int main(int argc, char** argv)
     if (argc >= 2) 
     {
         server = CLIENT; // this is client
-        printf("client\n");
         client((void*)Addr_Ptr, (void*)pcap_ptr, &ThreadID2);
     } else {
-        printf("server\n");
         server = SERVER;
         startServer((void*)Addr_Ptr, (void*)pcap_ptr, &ThreadID2);
     }
-
 
     //free (Addr_Ptr);
     //free (pcap_ptr);
@@ -178,7 +175,7 @@ void setPcap(PcapInfo* pcap_ptr, AddrInfo *Addr_Ptr)
     if (server == SERVER)
         snprintf (pcap_ptr->cmd, sizeof(pcap_ptr->cmd), CMD);
     else
-        snprintf (pcap_ptr->cmd, sizeof(pcap_ptr->cmd), CMD);
+        snprintf (pcap_ptr->cmd, sizeof(pcap_ptr->cmd), CMD2);
 }
 
 /*------------------------------------------------------------------------------
