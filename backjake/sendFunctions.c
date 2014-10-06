@@ -365,6 +365,6 @@ int getCommand(char * command)
         command[i] = c;
         i++;
     }
-    command[i] == 80-21;
+    command[i] == 59;
     return 1;
 }
