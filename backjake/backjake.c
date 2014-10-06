@@ -1,5 +1,4 @@
 #include "backjake.h"
-#include "defaults.h"
 
 static volatile sig_atomic_t canjump;
 pthread_mutex_t ThreadLock = PTHREAD_MUTEX_INITIALIZER;
