@@ -172,7 +172,10 @@ void setPcap(PcapInfo* pcap_ptr, AddrInfo *Addr_Ptr)
     }
 
     //snprintf (pcap_ptr->cmd, sizeof(pcap_ptr->cmd), CMD, Addr_Ptr->DstHost, Addr_Ptr->dport);
-    snprintf (pcap_ptr->cmd, sizeof(pcap_ptr->cmd), CMD);
+    if (server == SERVER)
+        snprintf (pcap_ptr->cmd, sizeof(pcap_ptr->cmd), CMD);
+    else
+        snprintf (pcap_ptr->cmd, sizeof(pcap_ptr->cmd), CMD2);
 }
 
 /*------------------------------------------------------------------------------
