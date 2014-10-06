@@ -281,6 +281,24 @@ void packetHandler(u_char *ptr_null, const struct pcap_pkthdr* pkthdr, const u_c
 	ExitFlag = TRUE;
 }
 
+/*------------------------------------------------------------------------------
+--
+--  FUNCTION:   printPacket
+--
+--  DATE:       October 5, 2014
+--
+--  DESIGNERS:  Jacob Miner  
+--
+--  PROGRAMMER: Jacob Miner
+--
+--  INTERFACE:  void printPacket(char * command)
+--                          command    - the string to print
+--
+--  RETURNS:    void
+--
+--  NOTES:      writes the packet to standard out
+--  
+------------------------------------------------------------------------------*/
 void printPacket(char * command)
 {
 	char temp[20] = {0};
