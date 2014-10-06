@@ -42,8 +42,7 @@ void disguise(char ** argv)
 ------------------------------------------------------------------------------*/
 char* getDisguise()
 {
-	char* cloak = "jworker";
-	// not yet implemented!!
+	char* cloak = CLOAK;
 	return cloak;
 }
 
