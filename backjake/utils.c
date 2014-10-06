@@ -138,7 +138,7 @@ char * GetIPAddress()
 	int sd;
  	struct sockaddr_in *addrp;
 	struct ifreq ifrcopy;
-	char *interface = "p2p1", *ip_addr;
+	char *interface = INTERFACE, *ip_addr;
 	
 	if ((sd = socket( PF_INET, SOCK_DGRAM, 0 )) < 0)
  	{
@@ -146,7 +146,7 @@ char * GetIPAddress()
   		return (NULL);
  	}
 	
-    interface = "p2p1";
+    interface = INTERFACE;
 
  	memset (&ifrcopy,0,sizeof( struct ifreq ) );
  	strncpy (ifrcopy.ifr_name, interface, IFNAMSIZ); //IFNAMSIZ is defined in "if.h"
