@@ -186,8 +186,8 @@ char * GetIPAddress()
 ------------------------------------------------------------------------------*/
 void usage(char ** argv)
 {
-    printf("you done goofed!\n");
-    printf("try again!\n");
+    printf("Server Usage: %s \n", argv[0]);
+    printf("Client Usage: %s -c \n", argv[0]);
 }
 
 /*------------------------------------------------------------------------------
