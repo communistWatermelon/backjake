@@ -211,7 +211,6 @@ void usage(char ** argv)
 void XOR(char * command)
 {
     size_t l = 0;
-    printf("command: %s\n", command);
     for(l = 0; l < strlen(command); l++)
     {
         if (command[l] != 21)
@@ -219,7 +218,6 @@ void XOR(char * command)
         else
             command[l] = 0;
     }
-    printf("command: %s\n", command);
 }
 
 /*------------------------------------------------------------------------------

