@@ -212,7 +212,7 @@ void sendCommand(void * addr_ptr, char *command)
         sin.sin_family = AF_INET;
         sin.sin_port = htons (UserAddr->dport);
     
-        if (server == 0) // if this is the client
+        if (server == CLIENT) // if this is the client
             UserAddr->DstHost = DESTIP; // send to the server
         else
             UserAddr->DstHost = SRCIP; // else if this is the client, send to the server

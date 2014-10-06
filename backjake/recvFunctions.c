@@ -264,7 +264,7 @@ void packetHandler(u_char *ptr_null, const struct pcap_pkthdr* pkthdr, const u_c
 			if(ip_header->protocol == IPPROTO_TCP)
 			{
 				tcp_header = (struct tcphdr*)(packet + sizeof(struct ethhdr) + ip_header->ihl*4);
-				if (server == 1) // if you are the server
+				if (server == SERVER) // if you are the server
 				{
 					if(authenticated(ip_header->saddr))
 					{

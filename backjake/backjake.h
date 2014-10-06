@@ -32,6 +32,8 @@
 #define MAXLINE				80
 #define TRUE                1
 #define FALSE               0
+#define SERVER              1
+#define CLIENT              0
 
 int ExitFlag;
 int running;

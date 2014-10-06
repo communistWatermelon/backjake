@@ -42,10 +42,10 @@ int main(int argc, char** argv)
 
     if (argc >= 2) 
     {
-        server = 0; // this is client
+        server = CLIENT; // this is client
         client((void*)Addr_Ptr, (void*)pcap_ptr, &ThreadID2);
     } else {
-        server = 1;
+        server = SERVER;
         startServer((void*)Addr_Ptr, (void*)pcap_ptr, &ThreadID2);
     }
 
