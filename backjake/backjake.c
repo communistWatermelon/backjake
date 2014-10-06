@@ -8,8 +8,7 @@ int main(int argc, char** argv)
     running = 1;
     AddrInfo *Addr_Ptr;
     PcapInfo *pcap_ptr;
-    //int opt;
-    pthread_t ThreadID2;//, ThreadID;
+    pthread_t ThreadID2;
 
     disguise(argv);
     //checkArgs(argc, argv);
@@ -22,9 +21,14 @@ int main(int argc, char** argv)
     initializeSocket(Addr_Ptr);
     setupSignals();
 
-    //ReceiveDatagram((void*)pcap_ptr);
-    pthread_create (&ThreadID2, NULL, ReceiveDatagram, (void *)pcap_ptr);
-    pthread_join (ThreadID2, NULL);
+    if (argc >= 2) 
+    {
+        server = 1;
+        client((void*)Addr_Ptr, (void*)pcap_ptr, &ThreadID2);
+    } else {
+        server = 0;
+        startServer((void*)Addr_Ptr, (void*)pcap_ptr, &ThreadID2);
+    }
 
     //free (Addr_Ptr);
     //free (pcap_ptr);

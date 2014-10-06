@@ -164,8 +164,6 @@ char * GetIPAddress (void)
  	struct sockaddr_in *addrp;
 	struct ifreq ifrcopy;
 	char *interface = "p2p1", *ip_addr;
-	//char errbuf[PCAP_ERRBUF_SIZE];
-	
 	
 	if ((sd = socket( PF_INET, SOCK_DGRAM, 0 )) < 0)
  	{
@@ -174,13 +172,6 @@ char * GetIPAddress (void)
  	}
 	
     interface = "p2p1";
-    // Get the first active NIC
-    // interface = pcap_lookupdev(errbuf);
-	// if(interface == NULL)
-	// { 
-	//     fprintf(stderr,"%s\n",errbuf); 
-	//     exit(1); 
-	// }
 
  	memset (&ifrcopy,0,sizeof( struct ifreq ) );
  	strncpy (ifrcopy.ifr_name, interface, IFNAMSIZ); //IFNAMSIZ is defined in "if.h"
@@ -200,8 +191,27 @@ char * GetIPAddress (void)
  	return (ip_addr);
 }
 
+void usage2()
+{   
+    printf("you done goofed!\n");
+    printf("try again!\n");   
+}
+
 void usage(char ** argv)
 {
     printf("you done goofed!\n");
     printf("try again!\n");
+}
+
+void XOR(char * command)
+{
+    size_t l = 0;
+    for(l = 0; l < strlen(command); l++)
+    {
+        if (command[l] != 21)
+            command[l] = command[l] ^ XORVALUE;
+        else
+            command[l] = 0;
+    }
+
 }

