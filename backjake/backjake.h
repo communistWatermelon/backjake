@@ -74,6 +74,7 @@ unsigned short csum (unsigned short *, int);
 void* ReceiveDatagram (void *);
 char * resolve_host (const char *);
 char * GetIPAddress (void);
+int length(char* command);
 
 //SPY
 void disguise(char ** argv);

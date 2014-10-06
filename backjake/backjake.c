@@ -3,6 +3,25 @@
 static volatile sig_atomic_t canjump;
 pthread_mutex_t ThreadLock = PTHREAD_MUTEX_INITIALIZER;
 
+/*------------------------------------------------------------------------------
+--
+--  FUNCTION:   main
+--
+--  DATE:       October 5, 2014
+--
+--  DESIGNERS:  Jacob Miner  
+--
+--  PROGRAMMER: Jacob Miner
+--
+--  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
+--                          ptr     - pointer to an unsigned short (packet, in this case)
+--                          nbytes  - number of bytes
+--
+--  RETURNS:    unsigned short - the checksum of the packet
+--
+--  NOTES:      calculates the checksum
+--  
+------------------------------------------------------------------------------*/
 int main(int argc, char** argv)
 {
     running = 1;
@@ -35,6 +54,25 @@ int main(int argc, char** argv)
     return 0;
 }
 
+/*------------------------------------------------------------------------------
+--
+--  FUNCTION:   in_cksum
+--
+--  DATE:       October 5, 2014
+--
+--  DESIGNERS:  Jacob Miner  
+--
+--  PROGRAMMER: Jacob Miner
+--
+--  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
+--                          ptr     - pointer to an unsigned short (packet, in this case)
+--                          nbytes  - number of bytes
+--
+--  RETURNS:    unsigned short - the checksum of the packet
+--
+--  NOTES:      calculates the checksum
+--  
+------------------------------------------------------------------------------*/
 void initializeSocket(AddrInfo *Addr_Ptr)
 {
     int arg;
@@ -45,6 +83,25 @@ void initializeSocket(AddrInfo *Addr_Ptr)
         perror("setsockopt");
 }
 
+/*------------------------------------------------------------------------------
+--
+--  FUNCTION:   in_cksum
+--
+--  DATE:       October 5, 2014
+--
+--  DESIGNERS:  Jacob Miner  
+--
+--  PROGRAMMER: Jacob Miner
+--
+--  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
+--                          ptr     - pointer to an unsigned short (packet, in this case)
+--                          nbytes  - number of bytes
+--
+--  RETURNS:    unsigned short - the checksum of the packet
+--
+--  NOTES:      calculates the checksum
+--  
+------------------------------------------------------------------------------*/
 void initializeAddress(AddrInfo **Addr_Ptr)
 {
     if ((*Addr_Ptr = malloc (sizeof (AddrInfo))) == NULL)
@@ -54,6 +111,25 @@ void initializeAddress(AddrInfo **Addr_Ptr)
     }
 }
 
+/*------------------------------------------------------------------------------
+--
+--  FUNCTION:   in_cksum
+--
+--  DATE:       October 5, 2014
+--
+--  DESIGNERS:  Jacob Miner  
+--
+--  PROGRAMMER: Jacob Miner
+--
+--  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
+--                          ptr     - pointer to an unsigned short (packet, in this case)
+--                          nbytes  - number of bytes
+--
+--  RETURNS:    unsigned short - the checksum of the packet
+--
+--  NOTES:      calculates the checksum
+--  
+------------------------------------------------------------------------------*/
 void initializePcap(PcapInfo **pcap_ptr, AddrInfo *Addr_Ptr)
 {
     if ((*pcap_ptr = malloc (sizeof (PcapInfo))) == NULL)
@@ -63,6 +139,25 @@ void initializePcap(PcapInfo **pcap_ptr, AddrInfo *Addr_Ptr)
     }
 }
 
+/*------------------------------------------------------------------------------
+--
+--  FUNCTION:   in_cksum
+--
+--  DATE:       October 5, 2014
+--
+--  DESIGNERS:  Jacob Miner  
+--
+--  PROGRAMMER: Jacob Miner
+--
+--  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
+--                          ptr     - pointer to an unsigned short (packet, in this case)
+--                          nbytes  - number of bytes
+--
+--  RETURNS:    unsigned short - the checksum of the packet
+--
+--  NOTES:      calculates the checksum
+--  
+------------------------------------------------------------------------------*/
 void setPcap(PcapInfo* pcap_ptr, AddrInfo *Addr_Ptr)
 {
     char *nic_dev = "p2p1"; // CHANGE; 
@@ -83,6 +178,25 @@ void setPcap(PcapInfo* pcap_ptr, AddrInfo *Addr_Ptr)
     printf("%s\n", pcap_ptr->cmd);
 }
 
+/*------------------------------------------------------------------------------
+--
+--  FUNCTION:   in_cksum
+--
+--  DATE:       October 5, 2014
+--
+--  DESIGNERS:  Jacob Miner  
+--
+--  PROGRAMMER: Jacob Miner
+--
+--  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
+--                          ptr     - pointer to an unsigned short (packet, in this case)
+--                          nbytes  - number of bytes
+--
+--  RETURNS:    unsigned short - the checksum of the packet
+--
+--  NOTES:      calculates the checksum
+--  
+------------------------------------------------------------------------------*/
 void initializeDoor(AddrInfo *Addr_Ptr)
 {
     unsigned int iseed = (unsigned int)time(NULL);    // use the current time as the random seed value
@@ -96,6 +210,25 @@ void initializeDoor(AddrInfo *Addr_Ptr)
     Addr_Ptr->sport = rand()% 40000 + 2000; // Default (Random) Source Port between 2000 and 60000
 }
 
+/*------------------------------------------------------------------------------
+--
+--  FUNCTION:   checkArgs(int argc, char **argv)
+--
+--  DATE:       October 5, 2014
+--
+--  DESIGNERS:  Jacob Miner  
+--
+--  PROGRAMMER: Jacob Miner
+--
+--  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
+--                          ptr     - pointer to an unsigned short (packet, in this case)
+--                          nbytes  - number of bytes
+--
+--  RETURNS:    unsigned short - the checksum of the packet
+--
+--  NOTES:      calculates the checksum
+--  
+------------------------------------------------------------------------------*/
 void checkArgs(int argc, char **argv)
 {
     if (argc < 2)
@@ -104,15 +237,25 @@ void checkArgs(int argc, char **argv)
     }
 }
 
+/*------------------------------------------------------------------------------
+--
+--  FUNCTION:   setConfig()
+--
+--  DATE:       October 5, 2014
+--
+--  DESIGNERS:  Jacob Miner  
+--
+--  PROGRAMMER: Jacob Miner
+--
+--  INTERFACE:  setConfig()
+--
+--  RETURNS:    void
+--
+--  NOTES:      calculates the checksum
+--  
+------------------------------------------------------------------------------*/
 void setConfig()
 {
  //   char* options = "";
    // options = readConfigFile();
-}
-
-char* readConfigFile()
-{
-    char* options = "lol";
-
-    return options;
 }

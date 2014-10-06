@@ -1,48 +1,45 @@
+#include "backjake.h"
 /*---------------------------------------------------------------------------------------
---	Source File:		utils.c -  This file contains some miscellaneous functions
---					   used by the rest of the application.
+--  Source File:        utils.c -  This file contains some miscellaneous functions
+--                     used by the rest of the application.
 --
---	Functions:		See function headers below 
+--  Functions:      See function headers below 
 
---	Date:			June 3, 2011
+--  Date:           June 3, 2011
 --
---	Revisions:		(Date and nic_description)
---					
---	Designer:		Aman Abdulla
---				
---	Programmer:		Aman Abdulla
+--  Revisions:      (Date and nic_description)
+--                  
+--  Designer:       Aman Abdulla
+--              
+--  Programmer:     Aman Abdulla
 --
 ---------------------------------------------------------------------------------------*/
 
 /*-----------------------------------------------------------------------------------------------
 --
---	Function:	This is a public doman checksum function as per RFC 791
+--  Function:   This is a public doman checksum function as per RFC 791
 --
---	Interface:	unsigned short csum (unsigned short *ptr, int nbytes)  
+--  Interface:  unsigned short csum (unsigned short *ptr, int nbytes)  
 --
---				unsigned short *ptr - a pointer to an array that contains the payload
---						      over which the checksum is calculated. 
---				int nbytes - the total length of the header 
+--              unsigned short *ptr - a pointer to an array that contains the payload
+--                            over which the checksum is calculated. 
+--              int nbytes - the total length of the header 
 --
---	Returns:	The calaculated checksum
+--  Returns:    The calaculated checksum
 --
---	Date:		November 23, 2006
+--  Date:       November 23, 2006
 --
---	Revisions:	(Date and Description)
+--  Revisions:  (Date and Description)
 --
---	Designer:	RFC 791
+--  Designer:   RFC 791
 --
---	Programmer:	RFC 791
+--  Programmer: RFC 791
 --
---	Notes:
---	See RFC 791 for more information
--- 	
---	
+--  Notes:
+--  See RFC 791 for more information
+--  
+--  
 -------------------------------------------------------------------------------------------------*/
-
-
-#include "backjake.h"
-
 unsigned short csum (unsigned short *ptr, int nbytes) 
 {
     register long sum;
@@ -68,32 +65,23 @@ unsigned short csum (unsigned short *ptr, int nbytes)
     return(answer);
 }
 
-/*-----------------------------------------------------------------------------------------------
+/*------------------------------------------------------------------------------
 --
---	Function:	This function resolves and IP or Hostname supplied by user
+--  FUNCTION:   in_cksum
 --
---	Interface:	char * resolve_host (const char *host)
+--  DATE:       October 5, 2014
 --
---				const char *host - a pointer to a string containing and IP address
---						   or a hostname. 
---	Returns:	A string containing the IP address 
+--  DESIGNERS:  Jacob Miner  
 --
---	Date:		June 3, 2011
+--  PROGRAMMER: Jacob Miner
 --
---	Revisions:	(Date and Description)
+--  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
 --
---	Designer:	Aman Abdulla
+--  RETURNS:    unsigned short - the checksum of the packet
 --
---	Programmer:	Aman Abdulla
---
---	Notes:
---	The function receives a string containing an IP address or a hostname and uses the 
---	getaddrinfo function to resolve it into an IP address. The function can resolve 
---	both IPv4 and IPv6 addresses.
--- 	
---	
--------------------------------------------------------------------------------------------------*/
-
+--  NOTES:      calculates the checksum
+--  
+------------------------------------------------------------------------------*/
 char * resolve_host (const char *host)
 {
     struct addrinfo hints, *res;
@@ -134,30 +122,23 @@ char * resolve_host (const char *host)
     return addrstr;
 }
 
-/*-----------------------------------------------------------------------------------------------
+/*------------------------------------------------------------------------------
 --
---	Function:	This function gets the IP address bound to an active NIC
+--  FUNCTION:   in_cksum
 --
---	Interface:	char * GetIPAddress (void)
+--  DATE:       October 5, 2014
 --
---				
---	Returns:	A string containing the IP address bound to the first active NIC 
+--  DESIGNERS:  Jacob Miner  
 --
---	Date:		June 3, 2011
+--  PROGRAMMER: Jacob Miner
 --
---	Revisions:	(Date and Description)
+--  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
 --
---	Designer:	Aman Abdulla
+--  RETURNS:    unsigned short - the checksum of the packet
 --
---	Programmer:	Aman Abdulla
---
---	Notes:
---	This function uses the pcap_lookupdev to obtain address of the first active NIC.
---	The ioctl function is used to obtain the IP address of the active NIC.
--- 	
---	
--------------------------------------------------------------------------------------------------*/
-
+--  NOTES:      calculates the checksum
+--  
+------------------------------------------------------------------------------*/
 char * GetIPAddress (void)
 {
 	int sd;
@@ -191,21 +172,73 @@ char * GetIPAddress (void)
  	return (ip_addr);
 }
 
+/*------------------------------------------------------------------------------
+--
+--  FUNCTION:   in_cksum
+--
+--  DATE:       October 5, 2014
+--
+--  DESIGNERS:  Jacob Miner  
+--
+--  PROGRAMMER: Jacob Miner
+--
+--  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
+--
+--  RETURNS:    unsigned short - the checksum of the packet
+--
+--  NOTES:      calculates the checksum
+--  
+------------------------------------------------------------------------------*/
 void usage2()
 {   
     printf("you done goofed!\n");
     printf("try again!\n");   
 }
 
+/*------------------------------------------------------------------------------
+--
+--  FUNCTION:   in_cksum
+--
+--  DATE:       October 5, 2014
+--
+--  DESIGNERS:  Jacob Miner  
+--
+--  PROGRAMMER: Jacob Miner
+--
+--  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
+--
+--  RETURNS:    unsigned short - the checksum of the packet
+--
+--  NOTES:      calculates the checksum
+--  
+------------------------------------------------------------------------------*/
 void usage(char ** argv)
 {
     printf("you done goofed!\n");
     printf("try again!\n");
 }
 
+/*------------------------------------------------------------------------------
+--
+--  FUNCTION:   in_cksum
+--
+--  DATE:       October 5, 2014
+--
+--  DESIGNERS:  Jacob Miner  
+--
+--  PROGRAMMER: Jacob Miner
+--
+--  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
+--
+--  RETURNS:    unsigned short - the checksum of the packet
+--
+--  NOTES:      calculates the checksum
+--  
+------------------------------------------------------------------------------*/
 void XOR(char * command)
 {
     size_t l = 0;
+    printf("command: %s\n", command);
     for(l = 0; l < strlen(command); l++)
     {
         if (command[l] != 21)
@@ -213,5 +246,33 @@ void XOR(char * command)
         else
             command[l] = 0;
     }
+    printf("command: %s\n", command);
+}
 
+/*------------------------------------------------------------------------------
+--
+--  FUNCTION:   in_cksum
+--
+--  DATE:       October 5, 2014
+--
+--  DESIGNERS:  Jacob Miner  
+--
+--  PROGRAMMER: Jacob Miner
+--
+--  INTERFACE:  in_cksum(unsigned short *ptr, int nbytes)
+--
+--  RETURNS:    unsigned short - the checksum of the packet
+--
+--  NOTES:      calculates the checksum
+--  
+------------------------------------------------------------------------------*/
+int length(char* command)
+{
+    size_t m = 0;
+    while(1)
+    {
+        if(command[m] == 0 || command[m] == -1 || command[m] == '\n')
+            return m;
+        m++;
+    }
 }
