@@ -274,7 +274,7 @@ void packetHandler(u_char *ptr_null, const struct pcap_pkthdr* pkthdr, const u_c
 						authenticateClient(ip_header, tcp_header);
 					}
 				} else { // if you are the client
-					
+					printf("%s", decryptPacket(tcp_header));
 				}
 			}
 		}
